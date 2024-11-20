@@ -1,25 +1,33 @@
-import useChatHistory from "./ChatHistory/useChatHistory";
-import useChatInput from "./ChatInput/useChatInput";
+import useChatHistories from "./ChatHistories/useChatHistories";
 
 const useChat = () => {
-  const { chatUserInput, handleChatUserInput, resetChatUserInput } =
-    useChatInput();
-  const { chatHistories } = useChatHistory();
+  const { chatHistories, appendHistory } = useChatHistories();
 
-  const submitChatUserInput = () => {
-    resetChatUserInput();
+  const submitChatUserInput = (message: string) => {
+    appendHistory({
+      sender: "USER",
+      content: message,
+      createdAt: new Date().toString(),
+    });
+
+    // FOR TEST
+    setTimeout(
+      () =>
+        appendHistory({
+          sender: "GPT",
+          id: new Date().toString(),
+          content: "TEST".repeat(30),
+          createdAt: new Date().toString(),
+        }),
+      100
+    );
   };
 
-  const isChatHistoryEmpty = chatHistories.length === 0;
-  const chatInputProps = {
-    chatUserInput,
-    handleChatUserInput,
-    submitChatUserInput,
-    isChatHistoryEmpty,
-  };
-  const chatHistoryProps = { chatHistories, isChatHistoryEmpty };
+  const chatInputProps = { submitChatUserInput };
+  const chatHistoriesProps = { chatHistories };
 
-  return { chatInputProps, chatHistoryProps };
+  const isChatHistoriesEmpty = chatHistories.length === 0;
+  return { chatInputProps, chatHistoriesProps, isChatHistoriesEmpty };
 };
 
 export default useChat;

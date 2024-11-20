@@ -1,18 +1,27 @@
-import { ChangeEventHandler, useState } from "react";
+import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import useChat from "../useChat";
 
-const useChatInput = () => {
+type Props = ReturnType<typeof useChat>["chatInputProps"];
+const useChatInput = ({ submitChatUserInput }: Props) => {
   const [chatUserInput, setChatUserInput] = useState<string>("");
+  const resetChatUserInput = () => setChatUserInput("");
 
   const handleChatUserInput: ChangeEventHandler<
     HTMLTextAreaElement | HTMLInputElement
   > = (event) => setChatUserInput(event.target.value);
 
-  const resetChatUserInput = () => setChatUserInput("");
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    if (chatUserInput.length === 0) return;
+
+    submitChatUserInput(chatUserInput);
+    resetChatUserInput();
+  };
 
   return {
     chatUserInput,
     handleChatUserInput,
-    resetChatUserInput,
+    handleSubmit,
   };
 };
 

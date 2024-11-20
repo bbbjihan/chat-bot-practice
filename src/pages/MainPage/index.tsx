@@ -1,11 +1,10 @@
-import { Box } from "@mui/material";
-import Chat from "./Chat";
+import Chat from "@/components/Chat";
 
 const MainPage = () => {
   return (
-    <Box>
+    <>
       <Chat />
-    </Box>
+    </>
   );
 };
 

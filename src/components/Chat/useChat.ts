@@ -10,13 +10,14 @@ const useChat = () => {
     resetChatUserInput();
   };
 
+  const isChatHistoryEmpty = chatHistories.length === 0;
   const chatInputProps = {
     chatUserInput,
     handleChatUserInput,
     submitChatUserInput,
+    isChatHistoryEmpty,
   };
-
-  const chatHistoryProps = { chatHistories };
+  const chatHistoryProps = { chatHistories, isChatHistoryEmpty };
 
   return { chatInputProps, chatHistoryProps };
 };

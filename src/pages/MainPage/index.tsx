@@ -1,12 +1,11 @@
-import ChatHistory from "./ChatHistory";
-import ChatInput from "./ChatInput";
+import { Box } from "@mui/material";
+import Chat from "./Chat";
 
 const MainPage = () => {
   return (
-    <>
-      <ChatHistory />
-      <ChatInput />
-    </>
+    <Box>
+      <Chat />
+    </Box>
   );
 };
 

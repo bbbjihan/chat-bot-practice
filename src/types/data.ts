@@ -3,11 +3,11 @@ interface ChatBase {
   createdAt: string;
 }
 
-interface UserChat extends ChatBase {
+export interface UserChat extends ChatBase {
   sender: "USER";
 }
 
-interface GPTChat extends ChatBase {
+export interface GPTChat extends ChatBase {
   sender: "GPT";
   id: string;
 }

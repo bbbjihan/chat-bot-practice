@@ -11,55 +11,70 @@ const ChatInput = ({ submitChatUserInput }: Props) => {
 
   return (
     <Box
-      component="form"
-      onSubmit={handleSubmit}
-      sx={(theme) => ({
+      sx={{
         width: "100%",
-        border: "1px solid #b4b4b4",
+        maxWidth: 712,
         display: "flex",
-        justifyContent: "space-between",
-        alignItems: "center",
-        mx: theme.spacing(4),
-        my: theme.spacing(2),
-        p: theme.spacing(3),
-        gap: theme.spacing(2),
-        borderRadius: 3,
-        transition: "all 0.2 ease",
-      })}
+        justifyContent: "center",
+      }}
     >
-      <TextField
-        fullWidth
-        value={chatUserInput}
-        onChange={handleChatUserInput}
-        variant="outlined"
-        multiline
-        label="프롬프트를 입력해주세요."
-        sx={{
-          "& label": {
-            color: "black",
-          },
-          "& label.Mui-focused": {
-            color: "black",
-          },
-          "& .MuiInput-underline:after": {
-            borderBottomColor: "#9b9b9b",
-          },
-          "& .MuiOutlinedInput-root": {
-            "& fieldset": {
-              borderColor: "#b4b4b4",
+      <Box
+        component="form"
+        onSubmit={handleSubmit}
+        sx={(theme) => ({
+          width: "100%",
+          border: "1px solid #b4b4b4",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          p: theme.spacing(3),
+          gap: theme.spacing(2),
+          borderRadius: 3,
+          transition: "all 0.2 ease",
+        })}
+      >
+        <TextField
+          fullWidth
+          value={chatUserInput}
+          onChange={handleChatUserInput}
+          variant="outlined"
+          multiline
+          label="프롬프트를 입력해주세요."
+          sx={{
+            "& label": {
+              color: "black",
             },
-            "&:hover fieldset": {
-              borderColor: "#b4b4b4",
+            "& label.Mui-focused": {
+              color: "black",
             },
-            "&.Mui-focused fieldset": {
-              borderColor: "#9b9b9b",
+            "& .MuiInput-underline:after": {
+              borderBottomColor: "#9b9b9b",
             },
-          },
-        }}
-      />
-      <IconButton type="submit" sx={{ height: "100%" }}>
-        <SendIcon />
-      </IconButton>
+            "& .MuiOutlinedInput-root": {
+              "& fieldset": {
+                borderColor: "#b4b4b4",
+              },
+              "&:hover fieldset": {
+                borderColor: "#b4b4b4",
+              },
+              "&.Mui-focused fieldset": {
+                borderColor: "#9b9b9b",
+              },
+            },
+          }}
+        />
+        <IconButton
+          type="submit"
+          sx={(theme) => ({
+            height: "40px",
+            width: "40px",
+            backgroundColor: theme.palette.grey[100],
+            fontSize: "24px",
+          })}
+        >
+          <SendIcon />
+        </IconButton>
+      </Box>
     </Box>
   );
 };

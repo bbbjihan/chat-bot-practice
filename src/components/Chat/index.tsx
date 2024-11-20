@@ -18,16 +18,16 @@ const Chat = () => {
       }}
     >
       <Box
-        sx={{
+        sx={(theme) => ({
           width: "100%",
-          maxWidth: 712,
-          height: "100%",
+          flex: 1,
+          pb: theme.spacing(3),
 
           display: "flex",
           flexDirection: "column",
           justifyContent: isChatHistoriesEmpty ? "center" : "space-between",
           alignItems: "center",
-        }}
+        })}
       >
         {!isChatHistoriesEmpty && <ChatHistories {...chatHistoriesProps} />}
         <ChatInput {...chatInputProps} />

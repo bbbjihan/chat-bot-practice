@@ -1,5 +1,7 @@
-import { Box, Typography } from "@mui/material";
+import Margin from "@/components/Margin";
+import { Box } from "@mui/material";
 import useChat from "../useChat";
+import ChatHistory from "./ChatHistory";
 
 type Props = ReturnType<typeof useChat>["chatHistoriesProps"];
 const ChatHistories = ({ chatHistories }: Props) => {
@@ -9,17 +11,32 @@ const ChatHistories = ({ chatHistories }: Props) => {
         width: "100%",
         flex: 1,
         display: "flex",
-        flexDirection: "column",
-        overflowY: "scroll",
+        justifyContent: "center",
+
+        overflowX: "hidden",
+        overflowY: "auto",
+
+        wordBreak: "break-word",
       }}
     >
-      {chatHistories.map((history, index) => (
-        <Box
-          key={`chat-history-${index}-${history.sender}-${history.createdAt}`}
-        >
-          <Typography>{history.content}</Typography>
-        </Box>
-      ))}
+      <Box
+        sx={{
+          width: "100%",
+          maxWidth: 762,
+          display: "flex",
+          flexDirection: "column",
+          gap: 2,
+        }}
+      >
+        <Margin H={12} />
+        {chatHistories.map((history, index) => (
+          <ChatHistory
+            key={`chat-history-${index}-${history.sender}-${history.createdAt}`}
+            history={history}
+          />
+        ))}
+      </Box>
+      <Margin H={24} />
     </Box>
   );
 };

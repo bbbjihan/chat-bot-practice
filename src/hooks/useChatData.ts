@@ -2,7 +2,7 @@ import { Chat, ChatStatus } from "@/types/data";
 import { useMemo, useState } from "react";
 import { v4 } from "uuid";
 
-const useChatHistories = () => {
+const useChatData = () => {
   const [chatHistories, setChatHistories] = useState<Array<Chat>>([]);
 
   const appendHistory = (chat: Chat) =>
@@ -52,4 +52,4 @@ const useChatHistories = () => {
   };
 };
 
-export default useChatHistories;
+export default useChatData;

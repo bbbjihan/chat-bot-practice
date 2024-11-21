@@ -1,7 +1,7 @@
 import SendIcon from "@mui/icons-material/Send";
 import StopIcon from "@mui/icons-material/Stop";
 import { Box, IconButton, TextField } from "@mui/material";
-import useChat from "../useChat";
+import useChat from "../useChatbot";
 import useChatInput from "./useChatInput";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];

@@ -1,17 +1,17 @@
 import { Chat } from "@/types/data";
-import ChatHistoryGPT from "./ChatHistoryGPT";
-import ChatHistoryUser from "./ChatHistoryUser";
+import GPTMessage from "./GPTMessage";
+import UserMessage from "./UserMessage";
 
 interface Props {
   chat: Chat;
   chatHistories: Array<Chat>;
   endStreaming: (chatId: string, responseMessage: string) => void;
 }
-const ChatHistory = ({ chat, chatHistories, endStreaming }: Props) => {
+const ChatMessagePair = ({ chat, chatHistories, endStreaming }: Props) => {
   return (
     <>
-      <ChatHistoryUser message={chat.request.message} />
-      <ChatHistoryGPT
+      <UserMessage message={chat.request.message} />
+      <GPTMessage
         chatHistories={chatHistories}
         chatId={chat.id}
         isStreaming={chat.status === "STREAMING"}
@@ -21,4 +21,4 @@ const ChatHistory = ({ chat, chatHistories, endStreaming }: Props) => {
   );
 };
 
-export default ChatHistory;
+export default ChatMessagePair;

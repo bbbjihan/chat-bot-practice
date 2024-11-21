@@ -3,7 +3,7 @@ import { Box, Typography } from "@mui/material";
 interface Props {
   message: string;
 }
-const ChatHistoryUser = ({ message }: Props) => {
+const UserMessage = ({ message }: Props) => {
   return (
     <Box
       sx={{
@@ -27,4 +27,4 @@ const ChatHistoryUser = ({ message }: Props) => {
   );
 };
 
-export default ChatHistoryUser;
+export default UserMessage;

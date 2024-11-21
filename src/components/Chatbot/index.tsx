@@ -1,11 +1,11 @@
 import { Box } from "@mui/material";
-import ChatHistories from "./ChatHistories";
+import ChatArea from "./ChatArea";
 import ChatInput from "./ChatInput";
-import useChat from "./useChat";
+import useChatbot from "./useChatbot";
 
-const Chat = () => {
+const Chatbot = () => {
   const { chatInputProps, chatHistoriesProps, isChatHistoriesEmpty } =
-    useChat();
+    useChatbot();
   return (
     <Box
       sx={{
@@ -28,11 +28,11 @@ const Chat = () => {
           alignItems: "center",
         })}
       >
-        {!isChatHistoriesEmpty && <ChatHistories {...chatHistoriesProps} />}
+        {!isChatHistoriesEmpty && <ChatArea {...chatHistoriesProps} />}
         <ChatInput {...chatInputProps} />
       </Box>
     </Box>
   );
 };
 
-export default Chat;
+export default Chatbot;

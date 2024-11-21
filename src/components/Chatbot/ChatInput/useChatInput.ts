@@ -4,7 +4,7 @@ import {
   KeyboardEventHandler,
   useState,
 } from "react";
-import useChat from "../useChat";
+import useChat from "../useChatbot";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];
 const useChatInput = ({ createNewChat, wholeChatStatus }: Props) => {

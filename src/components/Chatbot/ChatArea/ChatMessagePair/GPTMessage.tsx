@@ -9,7 +9,7 @@ interface Props {
   isStreaming: boolean;
   endStreaming: (chatId: string, responseMessage: string) => void;
 }
-const ChatHistoryGPT = ({
+const GPTMessage = ({
   chatId,
   chatHistories,
   isStreaming,
@@ -44,4 +44,4 @@ const ChatHistoryGPT = ({
   );
 };
 
-export default ChatHistoryGPT;
+export default GPTMessage;

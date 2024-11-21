@@ -1,10 +1,10 @@
 import Margin from "@/components/Margin";
 import { Box } from "@mui/material";
-import useChat from "../useChat";
-import ChatHistory from "./ChatHistory";
+import useChat from "../useChatbot";
+import ChatMessagePair from "./ChatMessagePair";
 
 type Props = ReturnType<typeof useChat>["chatHistoriesProps"];
-const ChatHistories = ({ chatHistories, endStreaming }: Props) => {
+const ChatArea = ({ chatHistories, endStreaming }: Props) => {
   return (
     <Box
       sx={{
@@ -30,7 +30,7 @@ const ChatHistories = ({ chatHistories, endStreaming }: Props) => {
       >
         <Margin H={12} />
         {chatHistories.map((chat, index) => (
-          <ChatHistory
+          <ChatMessagePair
             key={`chat-history-${index}-${chat.id}`}
             chat={chat}
             chatHistories={chatHistories}
@@ -42,4 +42,4 @@ const ChatHistories = ({ chatHistories, endStreaming }: Props) => {
     </Box>
   );
 };
-export default ChatHistories;
+export default ChatArea;

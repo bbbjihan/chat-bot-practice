@@ -1,8 +1,8 @@
-import useChatHistories from "./ChatHistories/useChatHistories";
+import useChatData from "@/hooks/useChatData";
 
-const useChat = () => {
+const useChatbot = () => {
   const { chatHistories, createNewChat, endStreaming, wholeChatStatus } =
-    useChatHistories();
+    useChatData();
 
   const chatInputProps = { createNewChat, wholeChatStatus };
   const chatHistoriesProps = {
@@ -14,4 +14,4 @@ const useChat = () => {
   return { chatInputProps, chatHistoriesProps, isChatHistoriesEmpty };
 };
 
-export default useChat;
+export default useChatbot;

@@ -1,24 +1,39 @@
+import { Chat, ChatForOpenAI } from "@/types/data";
 import { createNewStream, openStreamToString } from "@/utils/openAIUtils";
-import { useEffect, useState } from "react";
-
+import { isNull } from "@/utils/typeNarrowFunctions";
+import { useEffect, useMemo, useState } from "react";
 interface Props {
-  requestMessage: string;
-  processChatStatus: () => void;
+  chatId: string;
+  chatHistories: Array<Chat>;
+  endStreaming: (chatId: string, responseMessage: string) => void;
 }
-const useOpenAI = ({ requestMessage, processChatStatus }: Props) => {
+const useOpenAI = ({ chatId, chatHistories, endStreaming }: Props) => {
   const [message, setMessage] = useState<string>("");
+  const messages: Array<ChatForOpenAI> = useMemo(
+    () =>
+      chatHistories
+        .map((chat) => [
+          { role: "user", content: chat.request.message },
+          ...(!isNull(chat.response.message)
+            ? [{ role: "assistant", content: chat.response.message }]
+            : []),
+        ])
+        .flat(),
+    [chatHistories]
+  );
 
   const appendMessage = (message: string) =>
     setMessage((prev) => prev + message);
 
-  const startStreaming = () => {
-    createNewStream({ message: requestMessage }).then((stream) => {
-      processChatStatus();
+  const fetchResponseMessage = (responseMessage: string) =>
+    endStreaming(chatId, responseMessage);
 
+  const startStreaming = () => {
+    createNewStream({ messages }).then((stream) => {
       openStreamToString({
         stream,
         appendToTarget: appendMessage,
-        callback: processChatStatus,
+        callback: fetchResponseMessage,
       });
     });
   };

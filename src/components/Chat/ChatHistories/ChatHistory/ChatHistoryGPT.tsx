@@ -1,18 +1,21 @@
 import InputFocusCursor from "@/components/InputFocusCursor";
 import useOpenAI from "@/hooks/useOpenAI";
+import { Chat } from "@/types/data";
 import { Box, Typography } from "@mui/material";
 
 interface Props {
-  requestMessage: string;
+  chatId: string;
+  chatHistories: Array<Chat>;
   isStreaming: boolean;
-  processChatStatus: () => void;
+  endStreaming: (chatId: string, responseMessage: string) => void;
 }
 const ChatHistoryGPT = ({
-  requestMessage,
+  chatId,
+  chatHistories,
   isStreaming,
-  processChatStatus,
+  endStreaming,
 }: Props) => {
-  const { message } = useOpenAI({ requestMessage, processChatStatus });
+  const { message } = useOpenAI({ chatId, chatHistories, endStreaming });
 
   return (
     <Box

@@ -1,13 +1,13 @@
 import useChatHistories from "./ChatHistories/useChatHistories";
 
 const useChat = () => {
-  const { chatHistories, createNewChat, processChatStatus, wholeChatStatus } =
+  const { chatHistories, createNewChat, endStreaming, wholeChatStatus } =
     useChatHistories();
 
   const chatInputProps = { createNewChat, wholeChatStatus };
   const chatHistoriesProps = {
     chatHistories,
-    processChatStatus,
+    endStreaming,
   };
 
   const isChatHistoriesEmpty = chatHistories.length === 0;

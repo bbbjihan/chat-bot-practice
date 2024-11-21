@@ -4,18 +4,18 @@ import ChatHistoryUser from "./ChatHistoryUser";
 
 interface Props {
   chat: Chat;
-  processChatStatus: (chatId: string) => void;
+  chatHistories: Array<Chat>;
+  endStreaming: (chatId: string, responseMessage: string) => void;
 }
-const ChatHistory = ({ chat, processChatStatus }: Props) => {
-  const processChatStatusById = () => processChatStatus(chat.id);
-
+const ChatHistory = ({ chat, chatHistories, endStreaming }: Props) => {
   return (
     <>
       <ChatHistoryUser message={chat.request.message} />
       <ChatHistoryGPT
-        requestMessage={chat.request.message}
+        chatHistories={chatHistories}
+        chatId={chat.id}
         isStreaming={chat.status === "STREAMING"}
-        processChatStatus={processChatStatusById}
+        endStreaming={endStreaming}
       />
     </>
   );

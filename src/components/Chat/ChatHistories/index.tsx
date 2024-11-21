@@ -4,7 +4,7 @@ import useChat from "../useChat";
 import ChatHistory from "./ChatHistory";
 
 type Props = ReturnType<typeof useChat>["chatHistoriesProps"];
-const ChatHistories = ({ chatHistories, processChatStatus }: Props) => {
+const ChatHistories = ({ chatHistories, endStreaming }: Props) => {
   return (
     <Box
       sx={{
@@ -33,7 +33,8 @@ const ChatHistories = ({ chatHistories, processChatStatus }: Props) => {
           <ChatHistory
             key={`chat-history-${index}-${chat.id}`}
             chat={chat}
-            processChatStatus={processChatStatus}
+            chatHistories={chatHistories}
+            endStreaming={endStreaming}
           />
         ))}
       </Box>

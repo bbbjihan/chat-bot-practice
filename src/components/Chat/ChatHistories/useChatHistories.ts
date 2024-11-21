@@ -14,17 +14,23 @@ const useChatHistories = () => {
       request: {
         message,
       },
-      status: "START",
+      response: {
+        message: null,
+      },
+      status: "STREAMING",
       createdAt: new Date().toISOString(),
     });
 
-  const processChatStatus = (chatId: string) =>
+  const endStreaming = (chatId: string, responseMessage: string) =>
     setChatHistories((prev) =>
       prev.map((chat) =>
         chat.id === chatId
           ? {
               ...chat,
-              status: chat.status === "START" ? "STREAMING" : "DONE",
+              response: {
+                message: responseMessage,
+              },
+              status: "DONE",
             }
           : chat
       )
@@ -41,7 +47,7 @@ const useChatHistories = () => {
   return {
     chatHistories,
     createNewChat,
-    processChatStatus,
+    endStreaming,
     wholeChatStatus,
   };
 };

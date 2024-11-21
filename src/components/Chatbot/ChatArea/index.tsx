@@ -34,7 +34,7 @@ const ChatArea = ({ chatData, isStreaming }: Props) => {
           <Message
             key={`chat-history-${index}-${message.id ?? v4()}`}
             message={message}
-            isStreaming={isStreaming}
+            isStreaming={index === chatData.length - 1 && isStreaming}
           />
         ))}
       </Box>

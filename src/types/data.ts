@@ -1,21 +1,3 @@
-export type ChatStatus = "STREAMING" | "DONE";
-export interface Chat {
-  id: string;
-  request: {
-    message: string;
-  };
-  response: {
-    message: string | null;
-  };
-  status: ChatStatus;
-  createdAt: string;
-}
-
-export type ChatForOpenAI = {
-  role: string;
-  content: string;
-};
-
 interface MessageBase {
   id?: string;
   content: string;

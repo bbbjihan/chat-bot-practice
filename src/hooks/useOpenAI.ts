@@ -1,8 +1,14 @@
 import { Message } from "@/types/data";
-import { createNewStream, openStreamToString } from "@/utils/openAIUtils";
+import {
+  createNewStreamWithController,
+  openStreamToString,
+} from "@/utils/openAIUtils";
+import { useRef } from "react";
 
 const useOpenAI = () => {
-  const startStreamingMessage = ({
+  const abortStreaming = useRef<() => void>(() => {});
+
+  const startStreamingMessage = async ({
     messages,
     addTextToTarget,
     callback,
@@ -11,17 +17,19 @@ const useOpenAI = () => {
     addTextToTarget: (text: string) => void;
     callback?: () => void;
   }) => {
-    createNewStream({ messages }).then((stream) => {
-      openStreamToString({
-        stream,
-        addTextToTarget,
-        callback,
-      });
+    const { stream, abort } = await createNewStreamWithController({ messages });
+
+    abortStreaming.current = abort;
+    openStreamToString({
+      stream,
+      addTextToTarget,
+      callback,
     });
   };
 
   return {
     startStreamingMessage,
+    abortStreaming,
   };
 };
 

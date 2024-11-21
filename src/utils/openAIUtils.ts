@@ -1,24 +1,37 @@
-import { ChatForOpenAI } from "@/types/data";
+import { Message } from "@/types/data";
+import { isNull } from "@/utils/typeNarrowFunctions";
 import OpenAI from "openai";
 import { Chat } from "openai/resources/index.mjs";
 import { Stream } from "openai/streaming.mjs";
-import { isNull } from "./typeNarrowFunctions";
 
 const client = new OpenAI({
   apiKey: import.meta.env.VITE_OPENAI_API_KEY,
   dangerouslyAllowBrowser: true,
 });
 
-export const createNewStream = async ({
+export const createNewStreamWithController = async ({
   messages,
 }: {
-  messages: Array<ChatForOpenAI>;
-}) =>
-  client.chat.completions.create({
-    model: "gpt-4",
-    messages: messages as Chat.Completions.ChatCompletionMessageParam[],
-    stream: true,
-  });
+  messages: Array<Message>;
+}) => {
+  const controller = new AbortController();
+
+  const stream = await client.chat.completions.create(
+    {
+      model: "gpt-4",
+      messages: messages as Chat.Completions.ChatCompletionMessageParam[],
+      stream: true,
+    },
+    {
+      signal: controller.signal,
+    }
+  );
+
+  return {
+    stream,
+    abort: () => controller.abort(),
+  };
+};
 
 export const openStreamToString = async ({
   stream,

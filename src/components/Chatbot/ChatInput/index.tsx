@@ -5,12 +5,15 @@ import useChat from "../useChatbot";
 import useChatInput from "./useChatInput";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];
-const ChatInput = ({ appendNewMessage, isStreaming }: Props) => {
-  const { chatUserInput, handleChatUserInput, handleSubmit, handleKeyUp } =
-    useChatInput({
-      appendNewMessage,
-      isStreaming,
-    });
+const ChatInput = (props: Props) => {
+  const { isStreaming } = props;
+  const {
+    chatUserInput,
+    handleChatUserInput,
+    handleSubmit,
+    handleKeyUp,
+    handleStop,
+  } = useChatInput(props);
 
   return (
     <Box
@@ -75,6 +78,7 @@ const ChatInput = ({ appendNewMessage, isStreaming }: Props) => {
               backgroundColor: theme.palette.grey[100],
               fontSize: "24px",
             })}
+            onClick={handleStop}
           >
             <StopIcon />
           </IconButton>

@@ -11,7 +11,7 @@ const useChatbot = () => {
     isStreaming,
     toggleStreaming,
   } = useChatData();
-  const { startStreamingMessage } = useOpenAI();
+  const { startStreamingMessage, abortStreaming } = useOpenAI();
 
   useEffect(() => {
     if (isUserMessageLast) {
@@ -30,18 +30,12 @@ const useChatbot = () => {
   const chatInputProps = {
     appendNewMessage,
     isStreaming,
+    abortStreaming,
   };
   const chatAreaProps = {
     chatData,
     isStreaming,
   };
-
-  useEffect(() => console.log("chatData", chatData), [chatData]);
-  useEffect(
-    () => console.log("isUserMessageLast", isUserMessageLast),
-    [isUserMessageLast]
-  );
-  useEffect(() => console.log("isStreaming", isStreaming), [isStreaming]);
 
   const isChatDataEmpty = chatData.length === 0;
   return {

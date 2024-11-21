@@ -8,7 +8,11 @@ import { v4 } from "uuid";
 import useChat from "../useChatbot";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];
-const useChatInput = ({ appendNewMessage, isStreaming }: Props) => {
+const useChatInput = ({
+  appendNewMessage,
+  isStreaming,
+  abortStreaming,
+}: Props) => {
   const [chatUserInput, setChatUserInput] = useState<string>("");
   const resetChatUserInput = () => setChatUserInput("");
 
@@ -46,11 +50,14 @@ const useChatInput = ({ appendNewMessage, isStreaming }: Props) => {
     submit();
   };
 
+  const handleStop = abortStreaming.current;
+
   return {
     chatUserInput,
     handleChatUserInput,
     handleSubmit,
     handleKeyUp,
+    handleStop,
   };
 };
 

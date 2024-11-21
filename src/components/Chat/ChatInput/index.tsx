@@ -6,10 +6,11 @@ import useChatInput from "./useChatInput";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];
 const ChatInput = ({ createNewChat, wholeChatStatus }: Props) => {
-  const { chatUserInput, handleChatUserInput, handleSubmit } = useChatInput({
-    createNewChat,
-    wholeChatStatus,
-  });
+  const { chatUserInput, handleChatUserInput, handleSubmit, handleKeyDown } =
+    useChatInput({
+      createNewChat,
+      wholeChatStatus,
+    });
 
   return (
     <Box
@@ -39,6 +40,7 @@ const ChatInput = ({ createNewChat, wholeChatStatus }: Props) => {
           fullWidth
           value={chatUserInput}
           onChange={handleChatUserInput}
+          onKeyDown={handleKeyDown}
           variant="outlined"
           multiline
           label="프롬프트를 입력해주세요."

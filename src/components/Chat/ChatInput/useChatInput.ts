@@ -1,4 +1,9 @@
-import { ChangeEventHandler, FormEventHandler, useState } from "react";
+import {
+  ChangeEventHandler,
+  FormEventHandler,
+  KeyboardEventHandler,
+  useState,
+} from "react";
 import useChat from "../useChat";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];
@@ -10,18 +15,36 @@ const useChatInput = ({ createNewChat, wholeChatStatus }: Props) => {
     HTMLTextAreaElement | HTMLInputElement
   > = (event) => setChatUserInput(event.target.value);
 
-  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
-    event.preventDefault();
-    if (wholeChatStatus === "STREAMING" || chatUserInput.length === 0) return;
+  const submit = () => {
+    if (wholeChatStatus === "STREAMING" || !chatUserInput.trim()) return;
 
     createNewChat(chatUserInput);
     resetChatUserInput();
+  };
+
+  const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
+    event.preventDefault();
+    submit();
+  };
+
+  const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    if (event.key !== "Enter") return;
+    event.preventDefault();
+
+    const isShiftKeyDown = event.shiftKey;
+    if (isShiftKeyDown) {
+      setChatUserInput((prev) => prev + "\n");
+      return;
+    }
+
+    submit();
   };
 
   return {
     chatUserInput,
     handleChatUserInput,
     handleSubmit,
+    handleKeyDown,
   };
 };
 

@@ -3,20 +3,27 @@ import { useEffect, useState } from "react";
 
 interface Props {
   requestMessage: string;
+  processChatStatus: () => void;
 }
-const useOpenAI = ({ requestMessage }: Props) => {
+const useOpenAI = ({ requestMessage, processChatStatus }: Props) => {
   const [message, setMessage] = useState<string>("");
 
   const appendMessage = (message: string) =>
     setMessage((prev) => prev + message);
 
-  useEffect(() => {
+  const startStreaming = () => {
     createNewStream({ message: requestMessage }).then((stream) => {
-      openStreamToString({ stream, appendToTarget: appendMessage });
-    });
-  }, [requestMessage]);
+      processChatStatus();
 
-  useEffect(() => console.log(message), [message]); // FOR TEST
+      openStreamToString({
+        stream,
+        appendToTarget: appendMessage,
+        callback: processChatStatus,
+      });
+    });
+  };
+
+  useEffect(startStreaming, []);
 
   return {
     message,

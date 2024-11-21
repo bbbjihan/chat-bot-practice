@@ -17,9 +17,10 @@ const InputFocusCursor = () => {
       sx={{
         display: isVisible ? "inline-flex" : "none",
         width: 0,
-        height: "1rem",
+        height: "1.125rem",
         borderLeft: "1px solid black",
         ml: "2px",
+        verticalAlign: "text-bottom",
       }}
       component="span"
     />

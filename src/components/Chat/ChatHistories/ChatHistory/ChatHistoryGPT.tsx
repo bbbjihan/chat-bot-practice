@@ -5,9 +5,14 @@ import { Box, Typography } from "@mui/material";
 interface Props {
   requestMessage: string;
   isStreaming: boolean;
+  processChatStatus: () => void;
 }
-const ChatHistoryGPT = ({ requestMessage, isStreaming }: Props) => {
-  const { message } = useOpenAI({ requestMessage });
+const ChatHistoryGPT = ({
+  requestMessage,
+  isStreaming,
+  processChatStatus,
+}: Props) => {
+  const { message } = useOpenAI({ requestMessage, processChatStatus });
 
   return (
     <Box
@@ -30,7 +35,7 @@ const ChatHistoryGPT = ({ requestMessage, isStreaming }: Props) => {
         >
           {message}
         </Typography>
-        <InputFocusCursor />
+        {isStreaming && <InputFocusCursor />}
       </Box>
     </Box>
   );

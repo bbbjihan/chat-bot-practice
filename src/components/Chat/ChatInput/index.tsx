@@ -1,12 +1,14 @@
 import SendIcon from "@mui/icons-material/Send";
+import StopIcon from "@mui/icons-material/Stop";
 import { Box, IconButton, TextField } from "@mui/material";
 import useChat from "../useChat";
 import useChatInput from "./useChatInput";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];
-const ChatInput = ({ createNewChat }: Props) => {
+const ChatInput = ({ createNewChat, wholeChatStatus }: Props) => {
   const { chatUserInput, handleChatUserInput, handleSubmit } = useChatInput({
     createNewChat,
+    wholeChatStatus,
   });
 
   return (
@@ -63,17 +65,30 @@ const ChatInput = ({ createNewChat }: Props) => {
             },
           }}
         />
-        <IconButton
-          type="submit"
-          sx={(theme) => ({
-            height: "40px",
-            width: "40px",
-            backgroundColor: theme.palette.grey[100],
-            fontSize: "24px",
-          })}
-        >
-          <SendIcon />
-        </IconButton>
+        {wholeChatStatus === "STREAMING" ? (
+          <IconButton
+            sx={(theme) => ({
+              height: "40px",
+              width: "40px",
+              backgroundColor: theme.palette.grey[100],
+              fontSize: "24px",
+            })}
+          >
+            <StopIcon />
+          </IconButton>
+        ) : (
+          <IconButton
+            type="submit"
+            sx={(theme) => ({
+              height: "40px",
+              width: "40px",
+              backgroundColor: theme.palette.grey[100],
+              fontSize: "24px",
+            })}
+          >
+            <SendIcon />
+          </IconButton>
+        )}
       </Box>
     </Box>
   );

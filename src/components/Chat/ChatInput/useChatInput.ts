@@ -2,7 +2,7 @@ import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import useChat from "../useChat";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];
-const useChatInput = ({ createNewChat }: Props) => {
+const useChatInput = ({ createNewChat, wholeChatStatus }: Props) => {
   const [chatUserInput, setChatUserInput] = useState<string>("");
   const resetChatUserInput = () => setChatUserInput("");
 
@@ -12,7 +12,7 @@ const useChatInput = ({ createNewChat }: Props) => {
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
-    if (chatUserInput.length === 0) return;
+    if (wholeChatStatus === "STREAMING" || chatUserInput.length === 0) return;
 
     createNewChat(chatUserInput);
     resetChatUserInput();

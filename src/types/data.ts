@@ -1,15 +1,9 @@
-interface ChatBase {
-  content: string;
+type Message = string;
+
+export interface Chat {
+  request: {
+    message: Message;
+  };
+  status: "START" | "STREAMING" | "DONE";
   createdAt: string;
 }
-
-export interface UserChat extends ChatBase {
-  sender: "USER";
-}
-
-export interface GPTChat extends ChatBase {
-  sender: "GPT";
-  id: string;
-}
-
-export type Chat = UserChat | GPTChat;

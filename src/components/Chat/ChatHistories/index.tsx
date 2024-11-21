@@ -29,10 +29,10 @@ const ChatHistories = ({ chatHistories }: Props) => {
         }}
       >
         <Margin H={12} />
-        {chatHistories.map((history, index) => (
+        {chatHistories.map((chat, index) => (
           <ChatHistory
-            key={`chat-history-${index}-${history.sender}-${history.createdAt}`}
-            history={history}
+            key={`chat-history-${index}-${chat.createdAt}`}
+            chat={chat}
           />
         ))}
       </Box>

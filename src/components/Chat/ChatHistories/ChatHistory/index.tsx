@@ -3,15 +3,18 @@ import ChatHistoryGPT from "./ChatHistoryGPT";
 import ChatHistoryUser from "./ChatHistoryUser";
 
 interface Props {
-  history: Chat;
+  chat: Chat;
 }
-const ChatHistory = ({ history }: Props) => {
-  switch (history.sender) {
-    case "GPT":
-      return <ChatHistoryGPT chat={history} />;
-    case "USER":
-      return <ChatHistoryUser chat={history} />;
-  }
+const ChatHistory = ({ chat }: Props) => {
+  return (
+    <>
+      <ChatHistoryUser message={chat.request.message} />
+      <ChatHistoryGPT
+        requestMessage={chat.request.message}
+        isStreaming={chat.status === "STREAMING"}
+      />
+    </>
+  );
 };
 
 export default ChatHistory;

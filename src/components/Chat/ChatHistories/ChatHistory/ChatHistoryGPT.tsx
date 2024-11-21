@@ -1,10 +1,14 @@
-import { GPTChat } from "@/types/data";
+import InputFocusCursor from "@/components/InputFocusCursor";
+import useOpenAI from "@/hooks/useOpenAI";
 import { Box, Typography } from "@mui/material";
 
 interface Props {
-  chat: GPTChat;
+  requestMessage: string;
+  isStreaming: boolean;
 }
-const ChatHistoryGPT = ({ chat }: Props) => {
+const ChatHistoryGPT = ({ requestMessage, isStreaming }: Props) => {
+  const { message } = useOpenAI({ requestMessage });
+
   return (
     <Box
       sx={{
@@ -18,7 +22,15 @@ const ChatHistoryGPT = ({ chat }: Props) => {
           p: 1,
         }}
       >
-        <Typography whiteSpace="pre-wrap">{chat.content}</Typography>
+        <Typography
+          whiteSpace="pre-wrap"
+          sx={{
+            display: "inline",
+          }}
+        >
+          {message}
+        </Typography>
+        <InputFocusCursor />
       </Box>
     </Box>
   );

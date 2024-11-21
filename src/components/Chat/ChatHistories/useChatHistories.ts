@@ -7,9 +7,22 @@ const useChatHistories = () => {
   const appendHistory = (chat: Chat) =>
     setChatHistories((prev) => [...prev, chat]);
 
+  const createNewChat = (message: string) =>
+    appendHistory({
+      request: {
+        message,
+      },
+      response: {
+        message: "",
+        id: "",
+      },
+      status: "START",
+      createdAt: new Date().toISOString(),
+    });
+
   return {
     chatHistories,
-    appendHistory,
+    createNewChat,
   };
 };
 

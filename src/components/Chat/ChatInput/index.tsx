@@ -4,9 +4,9 @@ import useChat from "../useChat";
 import useChatInput from "./useChatInput";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];
-const ChatInput = ({ submitChatUserInput }: Props) => {
+const ChatInput = ({ createNewChat }: Props) => {
   const { chatUserInput, handleChatUserInput, handleSubmit } = useChatInput({
-    submitChatUserInput,
+    createNewChat,
   });
 
   return (

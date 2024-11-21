@@ -1,10 +1,9 @@
-import { UserChat } from "@/types/data";
 import { Box, Typography } from "@mui/material";
 
 interface Props {
-  chat: UserChat;
+  message: string;
 }
-const ChatHistoryUser = ({ chat }: Props) => {
+const ChatHistoryUser = ({ message }: Props) => {
   return (
     <Box
       sx={{
@@ -22,7 +21,7 @@ const ChatHistoryUser = ({ chat }: Props) => {
           borderRadius: 3,
         })}
       >
-        <Typography whiteSpace="pre-wrap">{chat.content}</Typography>
+        <Typography whiteSpace="pre-wrap">{message}</Typography>
       </Box>
     </Box>
   );

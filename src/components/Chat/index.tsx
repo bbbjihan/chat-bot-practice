@@ -6,7 +6,6 @@ import useChat from "./useChat";
 const Chat = () => {
   const { chatInputProps, chatHistoriesProps, isChatHistoriesEmpty } =
     useChat();
-
   return (
     <Box
       sx={{

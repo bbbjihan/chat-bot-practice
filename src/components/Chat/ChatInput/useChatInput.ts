@@ -2,7 +2,7 @@ import { ChangeEventHandler, FormEventHandler, useState } from "react";
 import useChat from "../useChat";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];
-const useChatInput = ({ submitChatUserInput }: Props) => {
+const useChatInput = ({ createNewChat }: Props) => {
   const [chatUserInput, setChatUserInput] = useState<string>("");
   const resetChatUserInput = () => setChatUserInput("");
 
@@ -14,7 +14,7 @@ const useChatInput = ({ submitChatUserInput }: Props) => {
     event.preventDefault();
     if (chatUserInput.length === 0) return;
 
-    submitChatUserInput(chatUserInput);
+    createNewChat(chatUserInput);
     resetChatUserInput();
   };
 

@@ -1,7 +1,8 @@
+import { Message } from "@/types/data";
 import { Box, Typography } from "@mui/material";
 
 interface Props {
-  message: string;
+  message: Message;
 }
 const UserMessage = ({ message }: Props) => {
   return (
@@ -21,7 +22,7 @@ const UserMessage = ({ message }: Props) => {
           borderRadius: 3,
         })}
       >
-        <Typography whiteSpace="pre-wrap">{message}</Typography>
+        <Typography whiteSpace="pre-wrap">{message.content}</Typography>
       </Box>
     </Box>
   );

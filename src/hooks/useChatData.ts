@@ -1,54 +1,37 @@
-import { Chat, ChatStatus } from "@/types/data";
+import { Message } from "@/types/data";
 import { useMemo, useState } from "react";
-import { v4 } from "uuid";
 
 const useChatData = () => {
-  const [chatHistories, setChatHistories] = useState<Array<Chat>>([]);
+  const [chatData, setChatData] = useState<Array<Message>>([]);
+  const isUserMessageLast = useMemo(
+    () =>
+      chatData.length !== 0 && chatData[chatData.length - 1].role === "user",
+    [chatData]
+  );
+  const appendNewMessage = (message: Message) =>
+    setChatData((prev) => [...prev, message]);
 
-  const appendHistory = (chat: Chat) =>
-    setChatHistories((prev) => [...prev, chat]);
-
-  const createNewChat = (message: string) =>
-    appendHistory({
-      id: v4(),
-      request: {
-        message,
-      },
-      response: {
-        message: null,
-      },
-      status: "STREAMING",
-      createdAt: new Date().toISOString(),
-    });
-
-  const endStreaming = (chatId: string, responseMessage: string) =>
-    setChatHistories((prev) =>
-      prev.map((chat) =>
-        chat.id === chatId
-          ? {
-              ...chat,
-              response: {
-                message: responseMessage,
-              },
-              status: "DONE",
-            }
-          : chat
-      )
+  const addTextToLastMessage = (text: string) =>
+    setChatData((prev) =>
+      prev[prev.length - 1].role === "user"
+        ? [...prev, { role: "assistant", content: text }]
+        : prev.map((message, index) =>
+            index === prev.length - 1
+              ? { ...message, content: message.content + text }
+              : message
+          )
     );
 
-  const wholeChatStatus: ChatStatus = useMemo(
-    () =>
-      chatHistories.some((chat) => chat.status === "STREAMING")
-        ? "STREAMING"
-        : "DONE",
-    [chatHistories]
-  );
+  const [isStreaming, setIsStreaming] = useState<boolean>(false);
+  const toggleStreaming = () => setIsStreaming((prev) => !prev);
 
   return {
-    chatHistories,
-    createNewChat,
-    endStreaming,
-    wholeChatStatus,
+    chatData,
+    isUserMessageLast,
+    appendNewMessage,
+    addTextToLastMessage,
+    isStreaming,
+    toggleStreaming,
   };
 };
 

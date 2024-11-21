@@ -1,10 +1,11 @@
 import Margin from "@/components/Margin";
 import { Box } from "@mui/material";
+import { v4 } from "uuid";
 import useChat from "../useChatbot";
-import ChatMessagePair from "./ChatMessagePair";
+import Message from "./Message";
 
-type Props = ReturnType<typeof useChat>["chatHistoriesProps"];
-const ChatArea = ({ chatHistories, endStreaming }: Props) => {
+type Props = ReturnType<typeof useChat>["chatAreaProps"];
+const ChatArea = ({ chatData, isStreaming }: Props) => {
   return (
     <Box
       sx={{
@@ -29,12 +30,11 @@ const ChatArea = ({ chatHistories, endStreaming }: Props) => {
         }}
       >
         <Margin H={12} />
-        {chatHistories.map((chat, index) => (
-          <ChatMessagePair
-            key={`chat-history-${index}-${chat.id}`}
-            chat={chat}
-            chatHistories={chatHistories}
-            endStreaming={endStreaming}
+        {chatData.map((message, index) => (
+          <Message
+            key={`chat-history-${index}-${message.id ?? v4()}`}
+            message={message}
+            isStreaming={isStreaming}
           />
         ))}
       </Box>

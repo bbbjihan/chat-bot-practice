@@ -4,10 +4,11 @@ import {
   KeyboardEventHandler,
   useState,
 } from "react";
+import { v4 } from "uuid";
 import useChat from "../useChatbot";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];
-const useChatInput = ({ createNewChat, wholeChatStatus }: Props) => {
+const useChatInput = ({ appendNewMessage, isStreaming }: Props) => {
   const [chatUserInput, setChatUserInput] = useState<string>("");
   const resetChatUserInput = () => setChatUserInput("");
 
@@ -16,9 +17,13 @@ const useChatInput = ({ createNewChat, wholeChatStatus }: Props) => {
   > = (event) => setChatUserInput(event.target.value);
 
   const submit = () => {
-    if (wholeChatStatus === "STREAMING" || !chatUserInput.trim()) return;
+    if (isStreaming || !chatUserInput.trim()) return;
 
-    createNewChat(chatUserInput);
+    appendNewMessage({
+      id: v4(),
+      role: "user",
+      content: chatUserInput,
+    });
     resetChatUserInput();
   };
 
@@ -27,13 +32,14 @@ const useChatInput = ({ createNewChat, wholeChatStatus }: Props) => {
     submit();
   };
 
-  const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
+  const handleKeyUp: KeyboardEventHandler<HTMLDivElement> = (event) => {
     if (event.key !== "Enter") return;
     event.preventDefault();
 
     const isShiftKeyDown = event.shiftKey;
     if (isShiftKeyDown) {
       setChatUserInput((prev) => prev + "\n");
+
       return;
     }
 
@@ -44,7 +50,7 @@ const useChatInput = ({ createNewChat, wholeChatStatus }: Props) => {
     chatUserInput,
     handleChatUserInput,
     handleSubmit,
-    handleKeyDown,
+    handleKeyUp,
   };
 };
 

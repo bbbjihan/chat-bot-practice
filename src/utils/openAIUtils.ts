@@ -21,19 +21,19 @@ export const createNewStream = async ({
   });
 
 export const openStreamToString = async ({
-  appendToTarget,
   stream,
+  addTextToTarget,
   callback,
 }: {
-  appendToTarget: (message: string) => void;
   stream: Stream<Chat.Completions.ChatCompletionChunk>;
-  callback: (responseMessage: string) => void;
+  addTextToTarget: (message: string) => void;
+  callback?: () => void;
 }) => {
   let message = "";
   for await (const chunk of stream) {
     if (!isNull(chunk.choices[0].finish_reason)) break;
     message += chunk.choices[0].delta.content || "";
-    appendToTarget(chunk.choices[0].delta.content || "");
+    addTextToTarget(chunk.choices[0].delta.content || "");
   }
-  callback(message);
+  if (callback) callback();
 };

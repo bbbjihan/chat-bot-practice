@@ -5,11 +5,11 @@ import useChat from "../useChatbot";
 import useChatInput from "./useChatInput";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];
-const ChatInput = ({ createNewChat, wholeChatStatus }: Props) => {
-  const { chatUserInput, handleChatUserInput, handleSubmit, handleKeyDown } =
+const ChatInput = ({ appendNewMessage, isStreaming }: Props) => {
+  const { chatUserInput, handleChatUserInput, handleSubmit, handleKeyUp } =
     useChatInput({
-      createNewChat,
-      wholeChatStatus,
+      appendNewMessage,
+      isStreaming,
     });
 
   return (
@@ -40,7 +40,7 @@ const ChatInput = ({ createNewChat, wholeChatStatus }: Props) => {
           fullWidth
           value={chatUserInput}
           onChange={handleChatUserInput}
-          onKeyDown={handleKeyDown}
+          onKeyUp={handleKeyUp}
           variant="outlined"
           multiline
           label="프롬프트를 입력해주세요."
@@ -67,7 +67,7 @@ const ChatInput = ({ createNewChat, wholeChatStatus }: Props) => {
             },
           }}
         />
-        {wholeChatStatus === "STREAMING" ? (
+        {isStreaming ? (
           <IconButton
             sx={(theme) => ({
               height: "40px",

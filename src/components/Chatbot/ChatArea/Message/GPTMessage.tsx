@@ -1,22 +1,12 @@
 import InputFocusCursor from "@/components/InputFocusCursor";
-import useOpenAI from "@/hooks/useOpenAI";
-import { Chat } from "@/types/data";
+import { Message } from "@/types/data";
 import { Box, Typography } from "@mui/material";
 
 interface Props {
-  chatId: string;
-  chatHistories: Array<Chat>;
+  message: Message;
   isStreaming: boolean;
-  endStreaming: (chatId: string, responseMessage: string) => void;
 }
-const GPTMessage = ({
-  chatId,
-  chatHistories,
-  isStreaming,
-  endStreaming,
-}: Props) => {
-  const { message } = useOpenAI({ chatId, chatHistories, endStreaming });
-
+const GPTMessage = ({ message, isStreaming }: Props) => {
   return (
     <Box
       sx={{
@@ -36,7 +26,7 @@ const GPTMessage = ({
             display: "inline",
           }}
         >
-          {message}
+          {message.content}
         </Typography>
         {isStreaming && <InputFocusCursor />}
       </Box>

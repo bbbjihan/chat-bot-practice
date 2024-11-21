@@ -4,8 +4,7 @@ import ChatInput from "./ChatInput";
 import useChatbot from "./useChatbot";
 
 const Chatbot = () => {
-  const { chatInputProps, chatHistoriesProps, isChatHistoriesEmpty } =
-    useChatbot();
+  const { chatInputProps, chatAreaProps, isChatDataEmpty } = useChatbot();
   return (
     <Box
       sx={{
@@ -24,11 +23,11 @@ const Chatbot = () => {
 
           display: "flex",
           flexDirection: "column",
-          justifyContent: isChatHistoriesEmpty ? "center" : "space-between",
+          justifyContent: isChatDataEmpty ? "center" : "space-between",
           alignItems: "center",
         })}
       >
-        {!isChatHistoriesEmpty && <ChatArea {...chatHistoriesProps} />}
+        {!isChatDataEmpty && <ChatArea {...chatAreaProps} />}
         <ChatInput {...chatInputProps} />
       </Box>
     </Box>

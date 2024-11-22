@@ -16,8 +16,9 @@ const UserMessage = ({ message }: Props) => {
       <Box
         sx={(theme) => ({
           backgroundColor: theme.palette.grey[300],
-          width: 500,
+          maxWidth: 500,
           p: 1,
+          px: 2,
           mx: 1,
           borderRadius: 3,
         })}

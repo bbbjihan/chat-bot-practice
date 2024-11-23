@@ -5,7 +5,7 @@ import useChat from "../useChatbot";
 import Message from "./Message";
 
 type Props = ReturnType<typeof useChat>["chatAreaProps"];
-const ChatArea = ({ chatData, isStreaming }: Props) => {
+const ChatArea = ({ chatAreaData, isStreaming }: Props) => {
   return (
     <Box
       sx={{
@@ -30,11 +30,11 @@ const ChatArea = ({ chatData, isStreaming }: Props) => {
         }}
       >
         <Margin H={12} />
-        {chatData.map((message, index) => (
+        {chatAreaData.map((message, index) => (
           <Message
             key={`chat-history-${index}-${message.id ?? v4()}`}
             message={message}
-            isStreaming={index === chatData.length - 1 && isStreaming}
+            isStreaming={index === chatAreaData.length - 1 && isStreaming}
           />
         ))}
       </Box>

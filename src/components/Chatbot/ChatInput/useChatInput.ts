@@ -4,7 +4,6 @@ import {
   KeyboardEventHandler,
   useState,
 } from "react";
-import { v4 } from "uuid";
 import useChat from "../useChatbot";
 
 type Props = ReturnType<typeof useChat>["chatInputProps"];
@@ -23,11 +22,7 @@ const useChatInput = ({
   const submit = () => {
     if (isStreaming || !chatUserInput.trim()) return;
 
-    appendNewMessage({
-      id: v4(),
-      role: "user",
-      content: chatUserInput,
-    });
+    appendNewMessage(chatUserInput);
     resetChatUserInput();
   };
 

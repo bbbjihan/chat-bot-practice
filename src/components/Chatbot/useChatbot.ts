@@ -1,28 +1,28 @@
-import useChatData from "@/hooks/useChatData";
+import useChatTree from "@/hooks/useChatTree";
 import useOpenAI from "@/hooks/useOpenAI";
 import { useEffect } from "react";
 
 const useChatbot = () => {
   const {
-    chatData,
+    chatAreaData,
     isUserMessageLast,
     appendNewMessage,
     addTextToLastMessage,
     isStreaming,
-    toggleStreaming,
-  } = useChatData();
+    setIsStreamingLeaf,
+  } = useChatTree();
   const { startStreamingMessage, abortStreaming } = useOpenAI();
 
   useEffect(() => {
     if (isUserMessageLast) {
-      toggleStreaming();
+      setIsStreamingLeaf(true);
       startStreamingMessage({
-        messages: chatData.map((message) => ({
+        messages: chatAreaData.map((message) => ({
           role: message.role,
           content: message.content,
         })),
         addTextToTarget: addTextToLastMessage,
-        callback: toggleStreaming,
+        callback: () => setIsStreamingLeaf(false),
       });
     }
   }, [isUserMessageLast]);
@@ -33,11 +33,11 @@ const useChatbot = () => {
     abortStreaming,
   };
   const chatAreaProps = {
-    chatData,
+    chatAreaData,
     isStreaming,
   };
 
-  const isChatDataEmpty = chatData.length === 0;
+  const isChatDataEmpty = chatAreaData.length === 0;
   return {
     isChatDataEmpty,
     chatInputProps,

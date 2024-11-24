@@ -1,7 +1,16 @@
 import { AssistantMessage, ChatData, Message, UserMessage } from "@/types/data";
-import { isNull } from "./typeNarrowFunctions";
+import { v4 } from "uuid";
+import { isNull, isUndefined } from "./typeNarrowFunctions";
+
+export interface ChatTree {
+  children: Array<ChatNode>;
+  selectedChildIndex: number | null;
+  isStreaming: boolean;
+}
+// TODO: head도 array로 수정
 
 export interface ChatNode {
+  id: string;
   user: UserMessage;
   assistant: AssistantMessage | null;
   children: Array<ChatNode>;
@@ -21,10 +30,22 @@ interface ChatNodeUtils {
 
   getisWholeChatStreaming: (head: ChatNode) => boolean;
   getChatAreaData: (head: ChatNode) => ChatData;
+
+  getNodeById: (head: ChatNode | null, nodeId: string) => ChatNode | null;
+  getParentById: (
+    head: ChatNode | null,
+    nodeId: string
+  ) => ChatNode | null | undefined;
+  appendNewChild: (
+    head: ChatNode,
+    nodeId: string,
+    message: string
+  ) => ChatNode | undefined;
 }
 
 const chatNodeUtils: ChatNodeUtils = {
   constructNode: (message) => ({
+    id: v4(),
     user: { role: "user", content: message },
     assistant: null,
     children: [],
@@ -84,12 +105,10 @@ const chatNodeUtils: ChatNodeUtils = {
   },
 
   getisWholeChatStreaming: (head) => {
-    if (head.isStreaming) return true;
-
     let cur: ChatNode | null = head;
     while (!isNull(cur)) {
+      if (cur.isStreaming === true) return true;
       cur = chatNodeUtils.getSelectedChild(cur);
-      if (cur?.isStreaming) return true;
     }
 
     return false;
@@ -100,7 +119,7 @@ const chatNodeUtils: ChatNodeUtils = {
 
     let cur: ChatNode | null = head;
     while (!isNull(cur)) {
-      messages.push(cur.user);
+      messages.push({ ...cur.user, id: cur.id });
 
       if (isNull(cur.assistant)) break;
       messages.push(cur.assistant);
@@ -108,6 +127,44 @@ const chatNodeUtils: ChatNodeUtils = {
     }
 
     return messages;
+  },
+
+  getNodeById: (head, nodeId) => {
+    let cur: ChatNode | null = head;
+    while (!isNull(cur)) {
+      if (cur.id === nodeId) return cur;
+      cur = chatNodeUtils.getSelectedChild(cur);
+    }
+
+    return null;
+  },
+
+  getParentById: (head, nodeId) => {
+    let parent: ChatNode | null = null;
+    let cur: ChatNode | null = head;
+
+    while (!isNull(cur)) {
+      if (cur.id === nodeId) break;
+      parent = cur;
+      cur = chatNodeUtils.getSelectedChild(cur);
+    }
+
+    if (isNull(cur)) return null;
+    if (isNull(parent)) return;
+    return parent;
+  },
+
+  appendNewChild: (head, nodeId, message) => {
+    const newHead = structuredClone(head);
+
+    const target = chatNodeUtils.getParentById(newHead, nodeId);
+    if (isNull(target)) return;
+    if (isUndefined(target)) return chatNodeUtils.constructNode(message);
+
+    target.children.push(chatNodeUtils.constructNode(message));
+    target.selectedChildIndex = target.children.length - 1;
+
+    return newHead;
   },
 };
 

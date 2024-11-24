@@ -1,7 +1,7 @@
 import { ChatData } from "@/types/data";
 import chatNodeUtils, { ChatNode } from "@/utils/chatNodeUtils";
 import { isNull, isUndefined } from "@/utils/typeNarrowFunctions";
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 
 const useChatTree = () => {
   const [chatTree, setChatTree] = useState<ChatNode>();
@@ -49,6 +49,14 @@ const useChatTree = () => {
     [chatTree]
   );
 
+  const appendNewMessageBranch = (nodeId: string, message: string) =>
+    setChatTree((prev) =>
+      isUndefined(prev)
+        ? undefined
+        : chatNodeUtils.appendNewChild(prev, nodeId, message)
+    );
+
+  useEffect(() => console.log(chatTree), [chatTree]);
   return {
     chatAreaData,
 
@@ -59,6 +67,8 @@ const useChatTree = () => {
     setIsStreamingLeaf,
 
     isUserMessageLast,
+
+    appendNewMessageBranch,
   };
 };
 

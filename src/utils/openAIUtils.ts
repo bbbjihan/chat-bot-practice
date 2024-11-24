@@ -48,5 +48,5 @@ export const openStreamToString = async ({
     message += chunk.choices[0].delta.content || "";
     addTextToTarget(chunk.choices[0].delta.content || "");
   }
-  if (callback) callback();
+  if (callback) setTimeout(callback, 0);
 };

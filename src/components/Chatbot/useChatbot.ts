@@ -10,6 +10,7 @@ const useChatbot = () => {
     addTextToLastMessage,
     isStreaming,
     setIsStreamingLeaf,
+    appendNewMessageBranch,
   } = useChatTree();
   const { startStreamingMessage, abortStreaming } = useOpenAI();
 
@@ -35,6 +36,7 @@ const useChatbot = () => {
   const chatAreaProps = {
     chatAreaData,
     isStreaming,
+    appendNewMessageBranch,
   };
 
   const isChatDataEmpty = chatAreaData.length === 0;

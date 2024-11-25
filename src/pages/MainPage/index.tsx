@@ -1,11 +1,9 @@
-import ChatHistory from "./ChatHistory";
-import ChatInput from "./ChatInput";
+import Chatbot from "@/components/Chatbot";
 
 const MainPage = () => {
   return (
     <>
-      <ChatHistory />
-      <ChatInput />
+      <Chatbot />
     </>
   );
 };

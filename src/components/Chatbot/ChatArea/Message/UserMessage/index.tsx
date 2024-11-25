@@ -7,6 +7,7 @@ import EditIcon from "@mui/icons-material/Edit";
 import SendIcon from "@mui/icons-material/Send";
 import { Box, IconButton, TextField, Typography } from "@mui/material";
 import { useMemo } from "react";
+import MessageContent from "../MessageContent";
 import useUserMessage from "./useUserMessage";
 import useUserMessagebranch from "./useUserMessageBranch";
 
@@ -68,7 +69,7 @@ const UserMessage = ({
             backgroundColor: theme.palette.grey[300],
             maxWidth: 500,
             width: isEditing ? 500 : "auto",
-            p: 1,
+            p: isEditing ? 1 : 0,
             px: 2,
             mx: 1,
             borderRadius: 3,
@@ -86,7 +87,7 @@ const UserMessage = ({
               size="small"
             />
           ) : (
-            <Typography whiteSpace="pre-wrap">{message.content}</Typography>
+            <MessageContent content={message.content} />
           )}
         </Box>
         <Box

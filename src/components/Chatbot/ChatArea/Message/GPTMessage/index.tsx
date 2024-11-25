@@ -1,6 +1,7 @@
 import InputFocusCursor from "@/components/InputFocusCursor";
 import { Message } from "@/types/data";
-import { Box, Typography } from "@mui/material";
+import { Box } from "@mui/material";
+import MessageContent from "../MessageContent";
 
 interface Props {
   message: Message;
@@ -12,6 +13,7 @@ const GPTMessage = ({ message, isStreaming }: Props) => {
       sx={{
         width: "100%",
         display: "flex",
+        flexDirection: "column",
         p: 1,
       }}
     >
@@ -20,16 +22,9 @@ const GPTMessage = ({ message, isStreaming }: Props) => {
           p: 1,
         }}
       >
-        <Typography
-          whiteSpace="pre-wrap"
-          sx={{
-            display: "inline",
-          }}
-        >
-          {message.content}
-        </Typography>
-        {isStreaming && <InputFocusCursor />}
+        <MessageContent content={message.content} />
       </Box>
+      {isStreaming && <InputFocusCursor />}
     </Box>
   );
 };

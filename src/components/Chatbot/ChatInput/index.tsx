@@ -11,7 +11,7 @@ const ChatInput = (props: Props) => {
     chatUserInput,
     handleChatUserInput,
     handleSubmit,
-    handleKeyUp,
+    handleKeyDown,
     handleStop,
   } = useChatInput(props);
 
@@ -43,7 +43,7 @@ const ChatInput = (props: Props) => {
           fullWidth
           value={chatUserInput}
           onChange={handleChatUserInput}
-          onKeyUp={handleKeyUp}
+          onKeyDown={handleKeyDown}
           variant="outlined"
           multiline
           label="프롬프트를 입력해주세요."

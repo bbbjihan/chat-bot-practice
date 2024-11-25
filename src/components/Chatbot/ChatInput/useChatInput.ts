@@ -1,7 +1,10 @@
+import { debounce } from "@mui/material";
 import {
   ChangeEventHandler,
   FormEventHandler,
   KeyboardEventHandler,
+  useCallback,
+  useMemo,
   useState,
 } from "react";
 import useChat from "../useChatbot";
@@ -19,30 +22,39 @@ const useChatInput = ({
     HTMLTextAreaElement | HTMLInputElement
   > = (event) => setChatUserInput(event.target.value);
 
-  const submit = () => {
+  const submit = useCallback(() => {
     if (isStreaming || !chatUserInput.trim()) return;
 
     appendNewMessage(chatUserInput);
     resetChatUserInput();
-  };
+  }, [isStreaming, chatUserInput, appendNewMessage]);
+
+  const debouncedSubmit = useMemo(
+    () =>
+      debounce((event: React.KeyboardEvent) => {
+        if (event.key !== "Enter") return;
+        const isShiftKeyDown = event.shiftKey;
+        if (isShiftKeyDown) {
+          setChatUserInput((prev) => prev + "\n");
+          return;
+        }
+
+        submit();
+      }, 200),
+    [submit]
+  );
 
   const handleSubmit: FormEventHandler<HTMLFormElement> = (event) => {
     event.preventDefault();
     submit();
   };
 
-  const handleKeyUp: KeyboardEventHandler<HTMLDivElement> = (event) => {
-    if (event.key !== "Enter") return;
-    event.preventDefault();
-
-    const isShiftKeyDown = event.shiftKey;
-    if (isShiftKeyDown) {
-      setChatUserInput((prev) => prev + "\n");
-
-      return;
+  const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {
+    if (event.key === "Enter") {
+      event.preventDefault();
     }
 
-    submit();
+    debouncedSubmit(event);
   };
 
   const handleStop = abortStreaming.current;
@@ -51,7 +63,7 @@ const useChatInput = ({
     chatUserInput,
     handleChatUserInput,
     handleSubmit,
-    handleKeyUp,
+    handleKeyDown,
     handleStop,
   };
 };

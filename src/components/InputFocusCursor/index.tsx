@@ -1,29 +1,47 @@
-import { Box } from "@mui/material";
-import { useEffect, useState } from "react";
+import { Box, keyframes } from "@mui/material";
+
+const bounce = keyframes`
+  0%, 100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-20px);
+  }
+`;
+
+const Dot = ({ delay }: { delay: string }) => (
+  <Box
+    sx={(theme) => ({
+      width: "8px",
+      height: "8px",
+      backgroundColor: theme.palette.grey[800],
+      borderRadius: "50%",
+      animation: `${bounce} 1.2s ${delay} infinite ease-in-out`,
+    })}
+  />
+);
+
+const BouncingDots = () => (
+  <Box
+    sx={{
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
+      gap: "8px",
+      height: "50px",
+    }}
+  >
+    <Dot delay="0s" />
+    <Dot delay="0.2s" />
+    <Dot delay="0.4s" />
+  </Box>
+);
 
 const InputFocusCursor = () => {
-  const [isVisible, setIsVisible] = useState<boolean>(true);
-  const blinkTransition = () => setIsVisible((prev) => !prev);
-
-  const handleTransitionInterval = () => {
-    const interval = setInterval(blinkTransition, 500);
-
-    return () => clearInterval(interval);
-  };
-
-  useEffect(handleTransitionInterval, []);
   return (
-    <Box
-      sx={{
-        display: isVisible ? "inline-flex" : "none",
-        width: 0,
-        height: "1.125rem",
-        borderLeft: "1px solid black",
-        ml: "2px",
-        verticalAlign: "text-bottom",
-      }}
-      component="span"
-    />
+    <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
+      <BouncingDots />
+    </Box>
   );
 };
 

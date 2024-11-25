@@ -1,5 +1,7 @@
 import Margin from "@/components/Margin";
+import { isNull } from "@/utils/typeNarrowFunctions";
 import { Box } from "@mui/material";
+import { useEffect, useRef } from "react";
 import { v4 } from "uuid";
 import useChat from "../useChatbot";
 import Message from "./Message";
@@ -11,12 +13,19 @@ const ChatArea = ({
   appendNewMessageBranch,
   getUserMessageBranchProps,
 }: Props) => {
+  const areaBottomRef = useRef<HTMLDivElement>(null);
+  useEffect(() => {
+    if (isNull(areaBottomRef.current)) return;
+    areaBottomRef.current.scrollIntoView({ behavior: "smooth" });
+  }, [chatAreaData]);
+
   return (
     <Box
       sx={{
         width: "100%",
         flex: 1,
         display: "flex",
+        flexDirection: "column",
         justifyContent: "center",
 
         overflowX: "hidden",
@@ -46,6 +55,7 @@ const ChatArea = ({
           />
         ))}
       </Box>
+      <div ref={areaBottomRef} />
       <Margin H={24} />
     </Box>
   );

@@ -11,25 +11,18 @@ $npm install
 $pnpm install
 ```
 
-## build
-```bash
-$npm run build
-# or
-$pnpm build
-```
-
-## prd start
-```bash
-$npm run start
-# or
-$pnpm start
-```
-
 ## dev start
 ```bash
 $npm run dev
 # or
 $pnpm dev
+```
+
+## build
+```bash
+$npm run build
+# or
+$pnpm build
 ```
 
 # 요구사항

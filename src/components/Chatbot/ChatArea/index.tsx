@@ -9,6 +9,7 @@ const ChatArea = ({
   chatAreaData,
   isStreaming,
   appendNewMessageBranch,
+  getUserMessageBranchProps,
 }: Props) => {
   return (
     <Box
@@ -41,6 +42,7 @@ const ChatArea = ({
             isStreaming={isStreaming}
             appendNewMessageBranch={appendNewMessageBranch}
             id={message.id}
+            getUserMessageBranchProps={getUserMessageBranchProps}
           />
         ))}
       </Box>

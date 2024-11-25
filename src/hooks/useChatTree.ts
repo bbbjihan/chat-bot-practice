@@ -1,62 +1,79 @@
 import { ChatData } from "@/types/data";
-import chatNodeUtils, { ChatNode } from "@/utils/chatNodeUtils";
+import chatNodeUtils, { ChatNode, ChatTree } from "@/utils/chatNodeUtils";
 import { isNull, isUndefined } from "@/utils/typeNarrowFunctions";
-import { useEffect, useMemo, useState } from "react";
+import { useMemo, useState } from "react";
 
 const useChatTree = () => {
-  const [chatTree, setChatTree] = useState<ChatNode>();
+  const [chatTree, setChatTree] = useState<ChatTree>(
+    chatNodeUtils.createNewTree()
+  );
 
   const appendNewMessage: (message: string) => void = (message) =>
     setChatTree((prev) =>
-      isUndefined(prev)
-        ? chatNodeUtils.constructNode(message)
-        : chatNodeUtils.createNewChat(prev, message)
+      chatNodeUtils.appendNewChild(
+        prev,
+        chatNodeUtils.getLeafNode(prev),
+        message
+      )
     );
 
   const addTextToLastMessage: (text: string) => void = (text) =>
-    setChatTree((prev) =>
-      isUndefined(prev)
-        ? undefined
-        : chatNodeUtils.addTextToLeafAssistantContent(prev, text)
-    );
+    setChatTree((prev) => {
+      const target = chatNodeUtils.getLeafNode(prev) as ChatNode;
+
+      if (isUndefined(target.nodeId)) return prev;
+
+      return chatNodeUtils.addTextToAssistantContentById(
+        prev,
+        target.nodeId,
+        text
+      );
+    });
 
   const chatAreaData = useMemo<ChatData>(
-    () =>
-      isUndefined(chatTree) ? [] : chatNodeUtils.getChatAreaData(chatTree),
+    () => chatNodeUtils.getChatAreaData(chatTree),
     [chatTree]
   );
 
-  const isStreaming = useMemo(
-    () =>
-      isUndefined(chatTree)
-        ? false
-        : chatNodeUtils.getisWholeChatStreaming(chatTree),
+  const isStreaming = useMemo<boolean>(
+    () => chatNodeUtils.getIsWholeChatStreaming(chatTree),
     [chatTree]
   );
 
   const setIsStreamingLeaf = (newValue: boolean) =>
-    setChatTree((prev) =>
-      isUndefined(prev)
-        ? undefined
-        : chatNodeUtils.setIsStreamingLeaf(prev, newValue)
-    );
+    setChatTree((prev) => {
+      const target = chatNodeUtils.getLeafNode(prev) as ChatNode;
 
-  const isUserMessageLast = useMemo(
-    () =>
-      isUndefined(chatTree)
-        ? false
-        : isNull(chatNodeUtils.getLeafNode(chatTree).assistant),
-    [chatTree]
-  );
+      if (isUndefined(target.nodeId)) return prev;
+
+      return chatNodeUtils.setIsStreamingById(prev, target.nodeId, newValue);
+    });
+
+  const isUserMessageLast = useMemo<boolean>(() => {
+    const leaf = chatNodeUtils.getLeafNode(chatTree) as ChatNode;
+    return !isUndefined(leaf.nodeId) && isNull(leaf.assistant);
+  }, [chatTree]);
 
   const appendNewMessageBranch = (nodeId: string, message: string) =>
     setChatTree((prev) =>
-      isUndefined(prev)
-        ? undefined
-        : chatNodeUtils.appendNewChild(prev, nodeId, message)
+      chatNodeUtils.appendNewChildById(prev, nodeId, message)
     );
 
-  useEffect(() => console.log(chatTree), [chatTree]);
+  const getUserMessageBranchProps = (nodeId: string) => {
+    const parent = chatNodeUtils.getParentById(chatTree, nodeId);
+
+    return {
+      selectedIndex: parent?.selectedChildIndex ?? 0,
+      setSelectedIndex: (newIndex: number) =>
+        isNull(parent)
+          ? {}
+          : setChatTree((prev) =>
+              chatNodeUtils.setSelectedChildIndex(prev, parent, newIndex)
+            ),
+      childrenLength: parent?.children?.length ?? 0,
+    };
+  };
+
   return {
     chatAreaData,
 
@@ -69,6 +86,7 @@ const useChatTree = () => {
     isUserMessageLast,
 
     appendNewMessageBranch,
+    getUserMessageBranchProps,
   };
 };
 

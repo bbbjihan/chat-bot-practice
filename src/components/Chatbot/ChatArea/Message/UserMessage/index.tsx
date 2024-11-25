@@ -1,21 +1,30 @@
+import useChatbot from "@/components/Chatbot/useChatbot";
 import { Message } from "@/types/data";
+import ChevronLeftIcon from "@mui/icons-material/ChevronLeft";
+import ChevronRightIcon from "@mui/icons-material/ChevronRight";
 import ClearIcon from "@mui/icons-material/Clear";
 import EditIcon from "@mui/icons-material/Edit";
 import SendIcon from "@mui/icons-material/Send";
 import { Box, IconButton, TextField, Typography } from "@mui/material";
+import { useMemo } from "react";
 import useUserMessage from "./useUserMessage";
+import useUserMessagebranch from "./useUserMessageBranch";
 
 interface Props {
   message: Message;
   isStreaming: boolean;
   appendNewMessageBranch: (nodeId: string, message: string) => void;
-  id?: string;
+  id: string;
+  getUserMessageBranchProps: ReturnType<
+    typeof useChatbot
+  >["chatAreaProps"]["getUserMessageBranchProps"];
 }
 const UserMessage = ({
   message,
   isStreaming,
   appendNewMessageBranch,
   id,
+  getUserMessageBranchProps,
 }: Props) => {
   const {
     isEditing,
@@ -29,6 +38,14 @@ const UserMessage = ({
     appendNewMessageBranch,
     id,
   });
+
+  const userMessageBranchProps = useMemo(
+    () => getUserMessageBranchProps(id),
+    [getUserMessageBranchProps, id]
+  );
+
+  const { selectedIndex, maxIndex, canGoPrev, goPrev, canGoNext, goNext } =
+    useUserMessagebranch(userMessageBranchProps);
 
   return (
     <Box
@@ -72,11 +89,18 @@ const UserMessage = ({
             <Typography whiteSpace="pre-wrap">{message.content}</Typography>
           )}
         </Box>
-        {!isStreaming && (
-          <Box
-            sx={{ px: 2, display: "flex", justifyContent: "flex-end", gap: 1 }}
-          >
-            {isEditing ? (
+        <Box
+          sx={{
+            height: 24,
+            px: 2,
+            display: "flex",
+            justifyContent: "flex-end",
+            alignItems: "center",
+            gap: 1,
+          }}
+        >
+          {!isStreaming &&
+            (isEditing ? (
               <>
                 <IconButton
                   sx={{ m: 0, p: 0, width: 24, height: 24 }}
@@ -92,15 +116,37 @@ const UserMessage = ({
                 </IconButton>
               </>
             ) : (
-              <IconButton
-                sx={{ m: 0, p: 0, width: 24, height: 24 }}
-                onClick={toggleIsEditing}
-              >
-                <EditIcon sx={{ fontSize: "16px" }} />
-              </IconButton>
-            )}
-          </Box>
-        )}
+              <>
+                {maxIndex > 0 && (
+                  <>
+                    <IconButton
+                      sx={{ m: 0, p: 0, width: 24, height: 24 }}
+                      onClick={goPrev}
+                      disabled={!canGoPrev}
+                    >
+                      <ChevronLeftIcon sx={{ fontSize: "16px" }} />
+                    </IconButton>
+                    <Typography variant="caption">
+                      {selectedIndex + 1} / {maxIndex + 1}
+                    </Typography>
+                    <IconButton
+                      sx={{ m: 0, p: 0, width: 24, height: 24 }}
+                      onClick={goNext}
+                      disabled={!canGoNext}
+                    >
+                      <ChevronRightIcon sx={{ fontSize: "16px" }} />
+                    </IconButton>
+                  </>
+                )}
+                <IconButton
+                  sx={{ m: 0, p: 0, width: 24, height: 24 }}
+                  onClick={toggleIsEditing}
+                >
+                  <EditIcon sx={{ fontSize: "16px" }} />
+                </IconButton>
+              </>
+            ))}
+        </Box>
       </Box>
     </Box>
   );

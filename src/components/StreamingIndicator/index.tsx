@@ -37,12 +37,21 @@ const BouncingDots = () => (
   </Box>
 );
 
-const InputFocusCursor = () => {
+interface Props {
+  isStreaming: boolean;
+}
+const StreamingIndicator = ({ isStreaming }: Props) => {
   return (
-    <Box sx={{ width: "100%", display: "flex", justifyContent: "center" }}>
-      <BouncingDots />
+    <Box
+      sx={{
+        width: "100%",
+        display: "flex",
+        justifyContent: "center",
+      }}
+    >
+      {isStreaming && <BouncingDots />}
     </Box>
   );
 };
 
-export default InputFocusCursor;
+export default StreamingIndicator;

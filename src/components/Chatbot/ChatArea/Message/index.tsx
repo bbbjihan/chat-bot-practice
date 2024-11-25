@@ -7,7 +7,6 @@ import UserMessage from "./UserMessage";
 interface Props {
   message: TMessage;
   isWhloeChatStreaming: boolean;
-  isStreaming: boolean;
   appendNewMessageBranch: (nodeId: string, message: string) => void;
   id?: string;
   getUserMessageBranchProps?: ReturnType<
@@ -17,7 +16,6 @@ interface Props {
 const Message = ({
   message,
   isWhloeChatStreaming,
-  isStreaming,
   appendNewMessageBranch,
   id,
   getUserMessageBranchProps,
@@ -33,7 +31,7 @@ const Message = ({
       getUserMessageBranchProps={getUserMessageBranchProps}
     />
   ) : (
-    <GPTMessage message={message} isStreaming={isStreaming} />
+    <GPTMessage message={message} />
   );
 
 export default Message;

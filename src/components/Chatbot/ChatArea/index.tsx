@@ -1,16 +1,15 @@
 import Margin from "@/components/Margin";
+import StreamingIndicator from "@/components/StreamingIndicator";
 import { isNull } from "@/utils/typeNarrowFunctions";
 import { Box } from "@mui/material";
 import { useEffect, useRef } from "react";
-import { v4 } from "uuid";
-import useChat from "../useChatbot";
+import useChatbot from "../useChatbot";
 import Message from "./Message";
 
-type Props = ReturnType<typeof useChat>["chatAreaProps"];
+type Props = ReturnType<typeof useChatbot>["chatAreaProps"];
 const ChatArea = ({
   chatAreaData,
   isWhloeChatStreaming,
-  getIsStreaming,
   appendNewMessageBranch,
   getUserMessageBranchProps,
 }: Props) => {
@@ -47,18 +46,17 @@ const ChatArea = ({
         <Margin H={12} />
         {chatAreaData.map((message, index) => (
           <Message
-            key={`chat-history-${index}-${message.id ?? v4()}`}
+            key={`chat-history-${index}-${message.id}`}
             message={message}
             isWhloeChatStreaming={isWhloeChatStreaming}
-            isStreaming={getIsStreaming(message.id)}
             appendNewMessageBranch={appendNewMessageBranch}
             id={message.id}
             getUserMessageBranchProps={getUserMessageBranchProps}
           />
         ))}
       </Box>
+      <StreamingIndicator isStreaming={isWhloeChatStreaming} />
       <div ref={areaBottomRef} />
-      <Margin H={24} />
     </Box>
   );
 };

@@ -14,6 +14,8 @@ const MessageContent = ({ content }: Props) => {
         display: "inline",
         maxWidth: "100%",
         overflowX: "auto",
+        whiteSpace: "pre-wrap",
+        wordBreak: "break-word",
       }}
     >
       <ReactMarkdown

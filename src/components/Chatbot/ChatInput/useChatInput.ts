@@ -7,9 +7,9 @@ import {
   useMemo,
   useState,
 } from "react";
-import useChat from "../useChatbot";
+import useChatbot from "../useChatbot";
 
-type Props = ReturnType<typeof useChat>["chatInputProps"];
+type Props = ReturnType<typeof useChatbot>["chatInputProps"];
 const useChatInput = ({
   appendNewMessage,
   isStreaming,
@@ -29,13 +29,30 @@ const useChatInput = ({
     resetChatUserInput();
   }, [isStreaming, chatUserInput, appendNewMessage]);
 
+  const insertCharAtCursor = (
+    textArea: HTMLTextAreaElement,
+    text: string
+  ): void => {
+    const { selectionStart, selectionEnd, value } = textArea;
+    const before = value.slice(0, selectionStart);
+    const after = value.slice(selectionEnd);
+    const newValue = before + text + after;
+
+    setChatUserInput(newValue);
+
+    setTimeout(() => {
+      textArea.selectionStart = selectionStart + text.length;
+      textArea.selectionEnd = selectionStart + text.length;
+    }, 0);
+  };
+
   const debouncedSubmit = useMemo(
     () =>
       debounce((event: React.KeyboardEvent) => {
         if (event.key !== "Enter") return;
         const isShiftKeyDown = event.shiftKey;
         if (isShiftKeyDown) {
-          setChatUserInput((prev) => prev + "\n");
+          insertCharAtCursor(event.target as HTMLTextAreaElement, "\n");
           return;
         }
 

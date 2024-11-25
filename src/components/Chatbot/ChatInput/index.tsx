@@ -1,10 +1,10 @@
 import SendIcon from "@mui/icons-material/Send";
 import StopIcon from "@mui/icons-material/Stop";
 import { Box, IconButton, TextField } from "@mui/material";
-import useChat from "../useChatbot";
+import useChatbot from "../useChatbot";
 import useChatInput from "./useChatInput";
 
-type Props = ReturnType<typeof useChat>["chatInputProps"];
+type Props = ReturnType<typeof useChatbot>["chatInputProps"];
 const ChatInput = (props: Props) => {
   const { isStreaming } = props;
   const {

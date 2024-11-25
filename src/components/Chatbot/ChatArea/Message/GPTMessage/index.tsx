@@ -1,13 +1,11 @@
-import InputFocusCursor from "@/components/InputFocusCursor";
 import { Message } from "@/types/data";
 import { Box } from "@mui/material";
 import MessageContent from "../MessageContent";
 
 interface Props {
   message: Message;
-  isStreaming: boolean;
 }
-const GPTMessage = ({ message, isStreaming }: Props) => {
+const GPTMessage = ({ message }: Props) => {
   return (
     <Box
       sx={{
@@ -24,7 +22,6 @@ const GPTMessage = ({ message, isStreaming }: Props) => {
       >
         <MessageContent content={message.content} />
       </Box>
-      {isStreaming && <InputFocusCursor />}
     </Box>
   );
 };

@@ -1,10 +1,10 @@
 import { ChatData } from "@/types/data";
-import chatNodeUtils, { ChatNode } from "@/utils/chatNodeUtils";
+import chatNodeUtils, { ChatTree } from "@/utils/chatNodeUtils";
 import { isNull, isUndefined } from "@/utils/typeNarrowFunctions";
 import { useEffect, useMemo, useState } from "react";
 
 const useChatTree = () => {
-  const [chatTree, setChatTree] = useState<ChatNode>();
+  const [chatTree, setChatTree] = useState<ChatTree>();
 
   const appendNewMessage: (message: string) => void = (message) =>
     setChatTree((prev) =>

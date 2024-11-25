@@ -2,13 +2,6 @@ import { AssistantMessage, ChatData, Message, UserMessage } from "@/types/data";
 import { v4 } from "uuid";
 import { isNull, isUndefined } from "./typeNarrowFunctions";
 
-export interface ChatTree {
-  children: Array<ChatNode>;
-  selectedChildIndex: number | null;
-  isStreaming: boolean;
-}
-// TODO: head도 array로 수정
-
 export interface ChatNode {
   id: string;
   user: UserMessage;

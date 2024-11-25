@@ -6,6 +6,7 @@ import UserMessage from "./UserMessage";
 
 interface Props {
   message: TMessage;
+  isWhloeChatStreaming: boolean;
   isStreaming: boolean;
   appendNewMessageBranch: (nodeId: string, message: string) => void;
   id?: string;
@@ -15,6 +16,7 @@ interface Props {
 }
 const Message = ({
   message,
+  isWhloeChatStreaming,
   isStreaming,
   appendNewMessageBranch,
   id,
@@ -25,7 +27,7 @@ const Message = ({
   !isUndefined(getUserMessageBranchProps) ? (
     <UserMessage
       message={message}
-      isStreaming={isStreaming}
+      isStreaming={isWhloeChatStreaming}
       appendNewMessageBranch={appendNewMessageBranch}
       id={id}
       getUserMessageBranchProps={getUserMessageBranchProps}

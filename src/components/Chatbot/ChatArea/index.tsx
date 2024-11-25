@@ -9,7 +9,8 @@ import Message from "./Message";
 type Props = ReturnType<typeof useChat>["chatAreaProps"];
 const ChatArea = ({
   chatAreaData,
-  isStreaming,
+  isWhloeChatStreaming,
+  getIsStreaming,
   appendNewMessageBranch,
   getUserMessageBranchProps,
 }: Props) => {
@@ -48,7 +49,8 @@ const ChatArea = ({
           <Message
             key={`chat-history-${index}-${message.id ?? v4()}`}
             message={message}
-            isStreaming={isStreaming}
+            isWhloeChatStreaming={isWhloeChatStreaming}
+            isStreaming={getIsStreaming(message.id)}
             appendNewMessageBranch={appendNewMessageBranch}
             id={message.id}
             getUserMessageBranchProps={getUserMessageBranchProps}

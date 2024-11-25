@@ -35,10 +35,15 @@ const useChatTree = () => {
     [chatTree]
   );
 
-  const isStreaming = useMemo<boolean>(
+  const isWhloeChatStreaming = useMemo<boolean>(
     () => chatNodeUtils.getIsWholeChatStreaming(chatTree),
     [chatTree]
   );
+
+  const getIsStreaming = (nodeId: string) => {
+    const target = chatNodeUtils.getNodeById(chatTree, nodeId);
+    return !isNull(target) && target.isStreaming;
+  };
 
   const setIsStreamingLeaf = (newValue: boolean) =>
     setChatTree((prev) => {
@@ -80,7 +85,8 @@ const useChatTree = () => {
     appendNewMessage,
     addTextToLastMessage,
 
-    isStreaming,
+    isWhloeChatStreaming,
+    getIsStreaming,
     setIsStreamingLeaf,
 
     isUserMessageLast,

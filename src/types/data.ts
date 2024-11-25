@@ -1,5 +1,5 @@
 interface MessageBase {
-  id?: string;
+  id: string;
   content: string;
 }
 export interface UserMessage extends MessageBase {

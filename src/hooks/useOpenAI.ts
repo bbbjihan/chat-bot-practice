@@ -13,7 +13,7 @@ const useOpenAI = () => {
     addTextToTarget,
     callback,
   }: {
-    messages: Array<Message>;
+    messages: Array<Pick<Message, "content" | "role">>;
     addTextToTarget: (text: string) => void;
     callback?: () => void;
   }) => {

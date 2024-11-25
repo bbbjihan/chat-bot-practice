@@ -8,7 +8,8 @@ const useChatbot = () => {
     isUserMessageLast,
     appendNewMessage,
     addTextToLastMessage,
-    isStreaming,
+    isWhloeChatStreaming,
+    getIsStreaming,
     setIsStreamingLeaf,
     appendNewMessageBranch,
     getUserMessageBranchProps,
@@ -31,12 +32,13 @@ const useChatbot = () => {
 
   const chatInputProps = {
     appendNewMessage,
-    isStreaming,
+    isStreaming: isWhloeChatStreaming,
     abortStreaming,
   };
   const chatAreaProps = {
     chatAreaData,
-    isStreaming,
+    isWhloeChatStreaming,
+    getIsStreaming,
     appendNewMessageBranch,
     getUserMessageBranchProps,
   };

@@ -59,14 +59,17 @@ const chatNodeUtils: ChatNodeUtils = {
     children: [],
     selectedChildIndex: null,
   }),
-  createNewNode: (message) => ({
-    nodeId: v4(),
-    user: { role: "user", content: message },
-    assistant: null,
-    children: [],
-    selectedChildIndex: null,
-    isStreaming: false,
-  }),
+  createNewNode: (message) => {
+    const id = v4();
+    return {
+      nodeId: id,
+      user: { role: "user", content: message, id },
+      assistant: null,
+      children: [],
+      selectedChildIndex: null,
+      isStreaming: false,
+    };
+  },
 
   getSelectedChild: (target) =>
     isNull(target.selectedChildIndex)
@@ -136,6 +139,7 @@ const chatNodeUtils: ChatNodeUtils = {
     if (isNull(target)) return tree;
 
     target.assistant = {
+      id: nodeId,
       role: "assistant",
       content: isNull(target.assistant)
         ? text

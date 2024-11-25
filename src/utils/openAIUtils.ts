@@ -12,7 +12,7 @@ const client = new OpenAI({
 export const createNewStreamWithController = async ({
   messages,
 }: {
-  messages: Array<Message>;
+  messages: Array<Pick<Message, "content" | "role">>;
 }) => {
   const controller = new AbortController();
 
